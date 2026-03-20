@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../layouts/base-layout.astro'
+import SectionNav from './section-nav.astro'
+import SectionHero from './section-hero.astro'
+import SectionMarquee from './section-marquee.astro'
+import SectionFeatures from './section-features.astro'
+import SectionWorkflow from './section-workflow.astro'
+import SectionScreenshots from './section-screenshots.astro'
+import SectionShortcuts from './section-shortcuts.astro'
+import SectionOpensource from './section-opensource.astro'
+import SectionDownload from './section-download.astro'
+import SectionFaq from './section-faq.astro'
+import SectionFooter from './section-footer.astro'
+import { featureIcons } from '../i18n/icons'
+
+interface Props { t: any }
+const { t } = Astro.props
+---
+
+<BaseLayout
+  htmlLang={t.htmlLang}
+  title={t.title}
+  description={t.description}
+  downloadMac={t.download.downloadMac}
+  downloadWin={t.download.downloadWin}
+  downloadGeneric={t.download.downloadGeneric}
+  heroMac={t.download.heroMac}
+  heroWin={t.download.heroWin}
+  heroGeneric={t.download.heroGeneric}
+  carouselCaptions={t.screenshots.items.map((i: any) => i.label)}
+>
+  <div id="cursor-glow" class="cursor-glow" style="opacity:0;"></div>
+
+  <SectionNav
+    features={t.nav.features}
+    workflow={t.nav.workflow}
+    screenshots={t.nav.screenshots}
+    faq={t.nav.faq}
+    download={t.nav.download}
+    switchLang={t.switchLang}
+    switchLangPath={t.switchLangPath}
+  />
+  <SectionHero
+    badge={t.hero.badge}
+    platforms={t.hero.platforms}
+    version={t.hero.version}
+    title1={t.hero.title1}
+    title2={t.hero.title2}
+    desc={t.hero.desc}
+    descMd={t.hero.descMd}
+    descProgress={t.hero.descProgress}
+    descCoverage={t.hero.descCoverage}
+    downloadBtn={t.hero.downloadBtn}
+    scroll={t.hero.scroll}
+  />
+  <SectionMarquee items={t.marquee} />
+  <SectionFeatures
+    label={t.features.label}
+    title={t.features.title}
+    desc={t.features.desc}
+    items={t.features.items}
+    featureIcons={featureIcons}
+  />
+  <SectionWorkflow
+    label={t.workflow.label}
+    title={t.workflow.title}
+    steps={t.workflow.steps}
+  />
+  <SectionScreenshots
+    label={t.screenshots.label}
+    title={t.screenshots.title}
+    items={t.screenshots.items}
+    prev={t.screenshots.prev}
+    next={t.screenshots.next}
+  />
+  <SectionShortcuts
+    label={t.shortcuts.label}
+    title={t.shortcuts.title}
+    desc={t.shortcuts.desc}
+    items={t.shortcuts.items}
+  />
+  <SectionOpensource
+    label={t.opensource.label}
+    title={t.opensource.title}
+    desc={t.opensource.desc}
+    viewSource={t.opensource.viewSource}
+    reportIssue={t.opensource.reportIssue}
+  />
+  <SectionDownload
+    label={t.download.label}
+    title={t.download.title}
+    desc={t.download.desc}
+    detecting={t.download.detecting}
+    recommended={t.download.recommended}
+    macOS={t.download.macOS}
+    windows={t.download.windows}
+    allVersions={t.download.allVersions}
+  />
+  <SectionFaq
+    label={t.faq.label}
+    title={t.faq.title}
+    items={t.faq.items}
+  />
+
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-full bg-zinc-800/80 border border-zinc-700/50 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700/80 backdrop-blur-sm transition-all opacity-0 pointer-events-none" aria-label={t.backToTop}>
+    <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <SectionFooter
+    reportIssue={t.footer.reportIssue}
+    changelog={t.footer.changelog}
+  />
+</BaseLayout>
