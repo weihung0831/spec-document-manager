@@ -1,0 +1,293 @@
+---
+import '../style.css'
+
+interface Props {
+  htmlLang?: string
+  title?: string
+  description?: string
+  downloadMac?: string
+  downloadWin?: string
+  downloadGeneric?: string
+  heroMac?: string
+  heroWin?: string
+  heroGeneric?: string
+  carouselCaptions?: string[]
+}
+
+const {
+  htmlLang = 'en',
+  title = 'Spec Document Manager',
+  description = '',
+  downloadMac = 'Download for macOS (.dmg)',
+  downloadWin = 'Download for Windows (.msi)',
+  downloadGeneric = 'Go to Downloads',
+  heroMac = 'Download for macOS',
+  heroWin = 'Download for Windows',
+  heroGeneric = 'Free Download',
+  carouselCaptions = ['Workspace', 'Split Preview', 'Coverage Analysis'],
+} = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang={htmlLang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='2'><rect x='3' y='3' width='7' height='7' rx='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='14' y='3' width='7' height='4' rx='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='14' y='10' width='7' height='11' rx='1' stroke-linecap='round' stroke-linejoin='round'/><rect x='3' y='13' width='7' height='8' rx='1' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+</head>
+<body
+  class="grain"
+  data-dl-mac={downloadMac}
+  data-dl-win={downloadWin}
+  data-dl-generic={downloadGeneric}
+  data-hero-mac={heroMac}
+  data-hero-win={heroWin}
+  data-hero-generic={heroGeneric}
+  data-carousel-captions={JSON.stringify(carouselCaptions)}
+>
+  <slot />
+  <script>
+    import { gsap } from 'gsap'
+    import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+    gsap.registerPlugin(ScrollTrigger)
+
+    // GSAP stagger animations
+    gsap.utils.toArray('.stagger-item').forEach((el, i) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          delay: (i % 4) * 0.08
+        }
+      )
+    })
+    gsap.to('#hero-title', {
+      yPercent: 30, ease: 'none',
+      scrollTrigger: { trigger: '#hero-title', start: 'top top', end: 'bottom top', scrub: 1 }
+    })
+    document.querySelectorAll('.section-line').forEach(line => {
+      ScrollTrigger.create({
+        trigger: line, start: 'top 90%', once: true,
+        onEnter: () => line.classList.add('active')
+      })
+    })
+
+    // Spotlight border (rAF-throttled)
+    document.querySelectorAll('.spotlight-border').forEach(card => {
+      let spotlightRaf = 0
+      card.addEventListener('mousemove', e => {
+        if (spotlightRaf) return
+        spotlightRaf = requestAnimationFrame(() => {
+          const rect = card.getBoundingClientRect()
+          card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px')
+          card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px')
+          spotlightRaf = 0
+        })
+      })
+    })
+
+    // Magnetic buttons (rAF-throttled)
+    document.querySelectorAll('.magnetic-btn').forEach(el => {
+      let magnetRaf = 0
+      el.addEventListener('mousemove', e => {
+        if (magnetRaf) return
+        magnetRaf = requestAnimationFrame(() => {
+          const rect = el.getBoundingClientRect()
+          const x = e.clientX - rect.left - rect.width / 2
+          const y = e.clientY - rect.top - rect.height / 2
+          el.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`
+          magnetRaf = 0
+        })
+      })
+      el.addEventListener('mouseleave', () => { el.style.transform = '' })
+    })
+
+    // Cursor glow (rAF-throttled)
+    const glow = document.getElementById('cursor-glow')
+    if (glow && window.matchMedia('(pointer: fine)').matches) {
+      let glowRaf = 0
+      document.addEventListener('mousemove', e => {
+        if (glowRaf) return
+        glowRaf = requestAnimationFrame(() => {
+          glow.style.left = e.clientX + 'px'
+          glow.style.top = e.clientY + 'px'
+          glow.style.opacity = '1'
+          glowRaf = 0
+        })
+      })
+      document.addEventListener('mouseleave', () => { glow.style.opacity = '0' })
+    }
+
+    // Hero text scramble
+    try {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      document.querySelectorAll('#hero-title span').forEach(el => {
+        const original = el.textContent
+        let iteration = 0
+        const interval = setInterval(() => {
+          el.textContent = original.split('').map((c, i) => {
+            if (i < iteration) return original[i]
+            return c === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+          }).join('')
+          iteration += 0.5
+          if (iteration >= original.length) { el.textContent = original; clearInterval(interval) }
+        }, 30)
+      })
+    } catch (e) { /* ignore */ }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'))
+        if (target) {
+          e.preventDefault()
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      })
+    })
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobile-menu-btn')
+    if (menuBtn) {
+      menuBtn.addEventListener('click', () => {
+        document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' })
+      })
+    }
+
+    // ==================== OS Detection & Download Links ====================
+    const body = document.body
+    const i18nDl = {
+      mac: body.dataset.dlMac || '',
+      win: body.dataset.dlWin || '',
+      generic: body.dataset.dlGeneric || '',
+      heroMac: body.dataset.heroMac || '',
+      heroWin: body.dataset.heroWin || '',
+      heroGeneric: body.dataset.heroGeneric || '',
+    }
+
+    const GITHUB_REPO = 'weihung0831/spec-ui'
+    const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`
+    let MAC_URL = RELEASES_URL
+    let WIN_URL = RELEASES_URL
+
+    fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
+      .then(r => r.json())
+      .then(data => {
+        if (!data.assets) return
+        data.assets.forEach(a => {
+          if (a.name.match(/aarch64\.dmg$/)) {
+            MAC_URL = a.browser_download_url
+            document.getElementById('dl-mac')?.setAttribute('href', MAC_URL)
+          }
+          if (a.name.match(/x64_en-US\.msi$/)) {
+            WIN_URL = a.browser_download_url
+            document.getElementById('dl-win')?.setAttribute('href', WIN_URL)
+          }
+        })
+        const dlBtn = document.getElementById('download-btn')
+        if (/Mac/.test(navigator.userAgent) && dlBtn) dlBtn.setAttribute('href', MAC_URL)
+        else if (/Win/.test(navigator.userAgent) && dlBtn) dlBtn.setAttribute('href', WIN_URL)
+      })
+      .catch(() => {})
+
+    // OS-specific button text
+    const ua = navigator.userAgent
+    const dlBtn = document.getElementById('download-btn')
+    const dlBtnText = document.getElementById('download-btn-text')
+    const heroText = document.getElementById('hero-download-text')
+    if (/Mac/.test(ua)) {
+      if (dlBtn) dlBtn.setAttribute('href', MAC_URL)
+      if (dlBtnText) dlBtnText.textContent = i18nDl.mac
+      if (heroText) heroText.textContent = i18nDl.heroMac
+    } else if (/Win/.test(ua)) {
+      if (dlBtn) dlBtn.setAttribute('href', WIN_URL)
+      if (dlBtnText) dlBtnText.textContent = i18nDl.win
+      if (heroText) heroText.textContent = i18nDl.heroWin
+    } else {
+      if (dlBtn) dlBtn.setAttribute('href', RELEASES_URL)
+      if (dlBtnText) dlBtnText.textContent = i18nDl.generic
+      if (heroText) heroText.textContent = i18nDl.heroGeneric
+    }
+
+    // ==================== Screenshot Carousel ====================
+    ;(function () {
+      const track = document.getElementById('carousel-track')
+      const dots = document.querySelectorAll('.carousel-dot')
+      const caption = document.getElementById('carousel-caption')
+      const prevBtn = document.getElementById('carousel-prev')
+      const nextBtn = document.getElementById('carousel-next')
+      const captions: string[] = JSON.parse(body.dataset.carouselCaptions || '[]')
+      let current = 0
+      const total = captions.length || 3
+      let autoplayTimer: ReturnType<typeof setInterval>
+
+      function goTo(index: number) {
+        current = ((index % total) + total) % total
+        if (track) track.style.transform = `translateX(-${current * 100}%)`
+        dots.forEach((d, i) => d.classList.toggle('active', i === current))
+        if (caption) caption.textContent = `${current + 1} / ${total} — ${captions[current]}`
+      }
+
+      function startAutoplay() {
+        autoplayTimer = setInterval(() => goTo(current + 1), 4000)
+      }
+
+      function resetAutoplay() {
+        clearInterval(autoplayTimer)
+        startAutoplay()
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearInterval(autoplayTimer)
+        else resetAutoplay()
+      })
+
+      prevBtn?.addEventListener('click', () => { goTo(current - 1); resetAutoplay() })
+      nextBtn?.addEventListener('click', () => { goTo(current + 1); resetAutoplay() })
+      dots.forEach(dot => {
+        dot.addEventListener('click', function () { goTo(parseInt((this as HTMLElement).dataset.index || '0')); resetAutoplay() })
+      })
+
+      startAutoplay()
+    })()
+
+    // ==================== FAQ Accordion ====================
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const item = (this as HTMLElement).closest('.faq-item')
+        if (!item) return
+        const wasOpen = item.classList.contains('open')
+        document.querySelectorAll('.faq-item.open').forEach(i => {
+          i.classList.remove('open')
+          i.querySelector('.faq-toggle')?.setAttribute('aria-expanded', 'false')
+        })
+        if (!wasOpen) {
+          item.classList.add('open')
+          this.setAttribute('aria-expanded', 'true')
+        }
+      })
+    })
+
+    // ==================== Back to Top ====================
+    const topBtn = document.getElementById('back-to-top')
+    if (topBtn) {
+      window.addEventListener('scroll', () => {
+        const show = window.scrollY > 400
+        topBtn.style.opacity = show ? '1' : '0'
+        topBtn.style.pointerEvents = show ? 'auto' : 'none'
+      }, { passive: true })
+      topBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+    }
+  </script>
+</body>
+</html>
