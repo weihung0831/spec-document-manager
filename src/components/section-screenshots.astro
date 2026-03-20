@@ -1,0 +1,60 @@
+---
+interface ScreenshotItem {
+  alt: string;
+  label: string;
+}
+
+interface Props {
+  label: string;
+  title: string;
+  items: ScreenshotItem[];
+  prev: string;
+  next: string;
+}
+const { label, title, items, prev, next } = Astro.props;
+
+// Image srcs stay hardcoded
+const srcs = [
+  '/assets/screenshot-workspace.png',
+  '/assets/screenshot-editor.png',
+  '/assets/screenshot-coverage.png',
+];
+---
+
+<section id="screenshots" class="py-16 md:py-24 border-t border-zinc-800/50">
+  <div class="max-w-[1400px] mx-auto px-6 mb-10">
+    <div class="flex items-end justify-between">
+      <div>
+        <span class="text-[10px] font-mono text-accent tracking-widest uppercase block mb-3">{label}</span>
+        <h2 class="text-3xl md:text-4xl font-black tracking-tighter text-zinc-100">{title}</h2>
+      </div>
+      <div class="hidden md:flex items-center gap-3">
+        <button id="carousel-prev" class="carousel-btn" aria-label={prev}>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="carousel-next" class="carousel-btn" aria-label={next}>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-[1400px] mx-auto px-6">
+    <div id="carousel-viewport" class="carousel-viewport rounded-2xl">
+      <div id="carousel-track" class="carousel-track">
+        {items.map((s, i) => (
+          <div class="stagger-item screenshot-tilt flex-shrink-0 w-full rounded-xl bg-zinc-900 border border-zinc-800/40 overflow-hidden">
+            <img src={srcs[i]} alt={s.alt} class="w-full h-auto" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="flex items-center justify-between mt-6">
+      <div id="carousel-dots" class="flex items-center gap-2">
+        {items.map((s, i) => (
+          <button class:list={['carousel-dot', i === 0 && 'active']} data-index={String(i)} aria-label={`${i + 1}: ${s.label}`}></button>
+        ))}
+      </div>
+      <span id="carousel-caption" class="text-[11px] font-mono text-zinc-600">1 / {items.length} — {items[0].label}</span>
+    </div>
+  </div>
+</section>
