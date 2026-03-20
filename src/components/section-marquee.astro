@@ -1,0 +1,17 @@
+---
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+
+<div class="border-y border-zinc-800/50 py-3 overflow-hidden">
+  <div class="marquee-track flex items-center gap-8 whitespace-nowrap">
+    {/* Repeat twice for seamless loop */}
+    {[...items, ...items].map(label => (
+      <span class="text-[11px] font-mono text-zinc-600 flex items-center gap-2">
+        <span class="w-1 h-1 bg-accent/50 rounded-full"></span>{label}
+      </span>
+    ))}
+  </div>
+</div>
