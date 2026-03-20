@@ -1,0 +1,24 @@
+{
+  "name": "spec-ui-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.1"
+  },
+  "dependencies": {
+    "astro": "^6.0.7",
+    "gsap": "^3.14.2"
+  }
+}
