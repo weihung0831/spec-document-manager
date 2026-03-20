@@ -1,0 +1,24 @@
+---
+interface Props {
+  reportIssue: string;
+  changelog: string;
+}
+const { reportIssue, changelog } = Astro.props;
+---
+
+<footer class="border-t border-zinc-800/50 py-8">
+  <div class="max-w-[1400px] mx-auto px-6">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center gap-6 text-[11px] font-mono text-zinc-600">
+        <span>MIT License</span>
+        <span class="text-zinc-800">|</span>
+        <span>2026</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] font-mono">
+        <a href="https://github.com/weihung0831/spec-ui" target="_blank" rel="noopener" class="text-zinc-600 hover:text-zinc-400 transition-colors">GitHub</a>
+        <a href="https://github.com/weihung0831/spec-ui/issues" target="_blank" rel="noopener" class="text-zinc-600 hover:text-zinc-400 transition-colors">{reportIssue}</a>
+        <a href="https://github.com/weihung0831/spec-ui/releases" target="_blank" rel="noopener" class="text-zinc-600 hover:text-zinc-400 transition-colors">{changelog}</a>
+      </div>
+    </div>
+  </div>
+</footer>
