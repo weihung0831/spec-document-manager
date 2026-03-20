@@ -156,9 +156,23 @@ const {
 
     // Mobile menu
     const menuBtn = document.getElementById('mobile-menu-btn')
-    if (menuBtn) {
+    const mobileMenu = document.getElementById('mobile-menu')
+    const menuIconOpen = document.getElementById('menu-icon-open')
+    const menuIconClose = document.getElementById('menu-icon-close')
+    if (menuBtn && mobileMenu) {
       menuBtn.addEventListener('click', () => {
-        document.getElementById('download')?.scrollIntoView({ behavior: 'smooth' })
+        const isOpen = !mobileMenu.classList.contains('hidden')
+        mobileMenu.classList.toggle('hidden', isOpen)
+        menuIconOpen?.classList.toggle('hidden', !isOpen)
+        menuIconClose?.classList.toggle('hidden', isOpen)
+      })
+      // Close menu on link click
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden')
+          menuIconOpen?.classList.remove('hidden')
+          menuIconClose?.classList.add('hidden')
+        })
       })
     }
 
