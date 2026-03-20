@@ -1,0 +1,47 @@
+---
+interface ShortcutItem {
+  label: string;
+  key: string;
+}
+
+interface Props {
+  label: string;
+  title: string;
+  desc: string;
+  items: ShortcutItem[];
+}
+const { label, title, desc, items } = Astro.props;
+
+const titleLines = title.split('\n');
+const kbdClass = 'text-[11px] font-mono text-zinc-500 bg-zinc-800 border border-zinc-700/50 rounded px-2 py-0.5 shadow-[0_2px_0_rgba(0,0,0,0.3)]';
+---
+
+<section class="py-16 md:py-24 border-t border-zinc-800/50">
+  <div class="max-w-[1400px] mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-12 md:gap-20 items-center">
+      <div class="md:pl-[4vw]">
+        <span class="text-[10px] font-mono text-accent tracking-widest uppercase block mb-3">{label}</span>
+        <h2 class="text-3xl md:text-4xl font-black tracking-tighter text-zinc-100 leading-tight mb-4">
+          {titleLines.map((line, i) => (
+            <Fragment>{line}{i < titleLines.length - 1 && <br />}</Fragment>
+          ))}
+        </h2>
+        <p class="text-sm text-zinc-500 leading-relaxed max-w-[38ch]">
+          {desc}
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        {items.map(s => (
+          <div class="stagger-item spotlight-border bg-zinc-925 border border-zinc-800/30 rounded-xl px-5 py-4 flex items-center justify-between group hover:border-zinc-700 transition-all">
+            <span class="text-[13px] text-zinc-400 group-hover:text-zinc-200 transition-colors">{s.label}</span>
+            <div class="flex items-center gap-1">
+              <kbd class={kbdClass}>Cmd</kbd>
+              <span class="text-zinc-700 text-[10px]">+</span>
+              <kbd class={kbdClass}>{s.key}</kbd>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
