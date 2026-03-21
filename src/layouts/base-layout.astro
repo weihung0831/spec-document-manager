@@ -189,55 +189,24 @@ const {
       heroGeneric: body.dataset.heroGeneric || '',
     }
 
-    const GITHUB_REPO = 'weihung0831/spec-ui'
-    const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`
-    let MAC_ARM_URL = RELEASES_URL
-    let MAC_INTEL_URL = RELEASES_URL
-    let WIN_URL = RELEASES_URL
-
-    fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
-      .then(r => r.json())
-      .then(data => {
-        if (!data.assets) return
-        data.assets.forEach(a => {
-          if (a.name.match(/aarch64\.dmg$/)) {
-            MAC_ARM_URL = a.browser_download_url
-            document.getElementById('dl-mac')?.setAttribute('href', MAC_ARM_URL)
-          }
-          if (a.name.match(/x64\.dmg$/)) {
-            MAC_INTEL_URL = a.browser_download_url
-            document.getElementById('dl-mac-intel')?.setAttribute('href', MAC_INTEL_URL)
-          }
-          if (a.name.match(/x64-setup\.exe$/)) {
-            WIN_URL = a.browser_download_url
-            document.getElementById('dl-win')?.setAttribute('href', WIN_URL)
-          }
-        })
-        const dlBtn = document.getElementById('download-btn')
-        if (/Mac/.test(navigator.userAgent) && dlBtn) dlBtn.setAttribute('href', MAC_ARM_URL)
-        else if (/Win/.test(navigator.userAgent) && dlBtn) dlBtn.setAttribute('href', WIN_URL)
-      })
-      .catch(() => {})
-
-    // OS-specific button text
+    // OS-specific: set recommended button href & text, hide duplicate row
     const ua = navigator.userAgent
-    const dlBtn = document.getElementById('download-btn')
+    const dlBtn = document.getElementById('download-btn') as HTMLAnchorElement | null
     const dlBtnText = document.getElementById('download-btn-text')
     const heroText = document.getElementById('hero-download-text')
+
     if (/Mac/.test(ua)) {
-      if (dlBtn) dlBtn.setAttribute('href', MAC_ARM_URL)
+      if (dlBtn) dlBtn.href = dlBtn.dataset.macArm || dlBtn.href
       if (dlBtnText) dlBtnText.textContent = i18nDl.mac
       if (heroText) heroText.textContent = i18nDl.heroMac
-      // Hide Apple Silicon row since it duplicates the recommended button
       document.getElementById('dl-mac')?.classList.add('hidden')
     } else if (/Win/.test(ua)) {
-      if (dlBtn) dlBtn.setAttribute('href', WIN_URL)
+      if (dlBtn) dlBtn.href = dlBtn.dataset.win || dlBtn.href
       if (dlBtnText) dlBtnText.textContent = i18nDl.win
       if (heroText) heroText.textContent = i18nDl.heroWin
-      // Hide Windows row since it duplicates the recommended button
       document.getElementById('dl-win')?.classList.add('hidden')
     } else {
-      if (dlBtn) dlBtn.setAttribute('href', RELEASES_URL)
+      if (dlBtn) dlBtn.href = 'https://github.com/weihung0831/spec-ui/releases'
       if (dlBtnText) dlBtnText.textContent = i18nDl.generic
       if (heroText) heroText.textContent = i18nDl.heroGeneric
     }
