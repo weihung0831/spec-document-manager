@@ -1,7 +1,7 @@
 export const en = {
   lang: 'en',
   htmlLang: 'en',
-  title: 'Spec Document Manager — Markdown Spec & Plan Management Tool',
+  title: 'Spec Plan Manager — Markdown Spec & Plan Management Tool',
   description: 'Desktop app for writing and managing Markdown spec and plan documents. Supports macOS and Windows.',
 
   // Nav
@@ -19,7 +19,7 @@ export const en = {
     badge: 'Free & Open Source',
     platforms: 'macOS + Windows',
     version: 'v0.1.0',
-    title1: 'Spec Document',
+    title1: 'Spec Plan',
     title2: 'Manager',
     desc: 'Write {md}, track {progress}, analyze {coverage} — a desktop app built for software teams.',
     descMd: 'Markdown specs',

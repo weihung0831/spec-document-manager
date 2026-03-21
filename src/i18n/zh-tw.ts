@@ -1,7 +1,7 @@
 export const zhTW = {
   lang: 'zh-TW',
   htmlLang: 'zh-Hant',
-  title: 'Spec Document Manager — Markdown 規格與計畫管理工具',
+  title: 'Spec Plan Manager — Markdown 規格與計畫管理工具',
   description: '桌面應用程式，用於編寫和管理 Markdown 規格與計畫文件。支援 macOS 與 Windows。',
 
   nav: {
