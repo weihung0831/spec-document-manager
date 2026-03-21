@@ -178,6 +178,48 @@ const {
       })
     }
 
+    // ==================== Fetch Latest GitHub Release ====================
+    const GITHUB_REPO = 'weihung0831/spec-ui'
+    const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`
+
+    try {
+      const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`)
+      const data = await res.json()
+      if (data.tag_name) {
+        const version = data.tag_name.replace(/^v/, '')
+        // Update version displays
+        const heroVersion = document.getElementById('hero-version')
+        if (heroVersion) heroVersion.textContent = `v${version}`
+        const dlBtn = document.getElementById('download-btn')
+        const versionSpan = dlBtn?.querySelector('.font-mono.text-zinc-600') as HTMLElement | null
+        if (versionSpan) {
+          const recommended = versionSpan.textContent?.split('·')[0]?.trim() || ''
+          versionSpan.textContent = `${recommended} · v${version}`
+        }
+      }
+      if (data.assets) {
+        let macArmUrl = '', macIntelUrl = '', winUrl = ''
+        for (const a of data.assets) {
+          if (a.name.match(/aarch64\.dmg$/)) macArmUrl = a.browser_download_url
+          if (a.name.match(/x64\.dmg$/)) macIntelUrl = a.browser_download_url
+          if (a.name.match(/x64-setup\.exe$/)) winUrl = a.browser_download_url
+        }
+        // Update download button data attributes and hrefs
+        const dlBtn = document.getElementById('download-btn') as HTMLAnchorElement | null
+        if (dlBtn) {
+          if (macArmUrl) { dlBtn.dataset.macArm = macArmUrl; dlBtn.href = macArmUrl }
+          if (macIntelUrl) dlBtn.dataset.macIntel = macIntelUrl
+          if (winUrl) dlBtn.dataset.win = winUrl
+        }
+        const dlMac = document.getElementById('dl-mac') as HTMLAnchorElement | null
+        if (dlMac && macArmUrl) dlMac.href = macArmUrl
+        const dlMacIntel = document.getElementById('dl-mac-intel') as HTMLAnchorElement | null
+        if (dlMacIntel && macIntelUrl) dlMacIntel.href = macIntelUrl
+        const dlWin = document.getElementById('dl-win') as HTMLAnchorElement | null
+        if (dlWin && winUrl) dlWin.href = winUrl
+      }
+    } catch { /* fallback: links point to releases page */ }
+
     // ==================== OS Detection & Download Links ====================
     const body = document.body
     const i18nDl = {

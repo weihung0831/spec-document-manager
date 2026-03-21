@@ -16,26 +16,13 @@ import { featureIcons } from '../i18n/icons'
 interface Props { t: any }
 const { t } = Astro.props
 
-// Fetch GitHub release data once at build time, shared by Hero & Download sections
+// Fallback URLs — client-side JS will fetch latest release dynamically
 const GITHUB_REPO = 'weihung0831/spec-ui';
 const RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`;
-let macArmUrl = RELEASES_URL;
-let macIntelUrl = RELEASES_URL;
-let winUrl = RELEASES_URL;
-let releaseVersion = '';
-
-try {
-  const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
-  const data = await res.json();
-  if (data.tag_name) releaseVersion = data.tag_name.replace(/^v/, '');
-  if (data.assets) {
-    for (const a of data.assets) {
-      if (a.name.match(/aarch64\.dmg$/)) macArmUrl = a.browser_download_url;
-      if (a.name.match(/x64\.dmg$/)) macIntelUrl = a.browser_download_url;
-      if (a.name.match(/x64-setup\.exe$/)) winUrl = a.browser_download_url;
-    }
-  }
-} catch {}
+const macArmUrl = RELEASES_URL;
+const macIntelUrl = RELEASES_URL;
+const winUrl = RELEASES_URL;
+const releaseVersion = '';
 ---
 
 <BaseLayout
