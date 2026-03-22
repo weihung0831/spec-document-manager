@@ -1,13 +1,16 @@
 # Spec Document Manager — Landing Page
 
-[Spec Document Manager](https://github.com/user/spec-document-manager) 桌面應用程式的官方網站，使用 Astro 6 + Tailwind CSS v4 + GSAP 建構。
+[Spec Document Manager](https://github.com/weihung0831/spec-document-manager) 桌面應用程式的官方網站，使用 Astro 6 + Tailwind CSS v4 + GSAP 建構。
 
 ## 技術棧
 
-- **Astro 6** — 靜態網站框架
-- **Tailwind CSS v4** — 使用 `@theme` 指令定義設計 token
-- **GSAP** — 捲動動畫與過場效果
-- **i18n** — 支援 English / 繁體中文
+| 技術 | 版本 | 用途 |
+|------|------|------|
+| **Astro** | 6.x | 靜態網站框架 |
+| **Tailwind CSS** | v4 | 使用 `@theme` 指令定義設計 token |
+| **GSAP** | 3.x | 捲動動畫與過場效果 |
+| **Vite** | 8.x | 建置工具 |
+| **i18n** | — | 支援 English / 繁體中文 |
 
 ## 快速開始
 
@@ -38,6 +41,7 @@ src/
 ├── i18n/
 │   ├── en.ts                     # 英文翻譯
 │   ├── zh-tw.ts                  # 繁體中文翻譯
+│   ├── icons.ts                  # SVG icon 定義
 │   └── utils.ts                  # i18n 工具
 ├── layouts/
 │   └── base-layout.astro         # HTML 外殼、字型載入、JS
