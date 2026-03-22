@@ -30,7 +30,7 @@ export const en = {
   },
 
   // Marquee
-  marquee: ['Split Editor', 'Live Preview', 'Coverage Analysis', 'Progress Tracking', 'File Watcher', 'Multi-Project Workspace', 'Mermaid Diagrams', 'Auto Save', 'Multi-Tab Editing', 'Bilingual'],
+  marquee: ['Split Editor', 'Live Preview', 'Coverage Analysis', 'Spec Analyzer', 'Progress Tracking', 'File Watcher', 'Multi-Project Workspace', 'Mermaid Diagrams', 'Auto Save', 'Multi-Tab Editing', 'Auto Update', 'Compact Mode', 'Bilingual'],
 
   // Features
   features: {
@@ -38,14 +38,13 @@ export const en = {
     title: 'From writing\nto delivery.',
     desc: 'Complete your spec management workflow in one place. Edit, preview, track, analyze — all in one window.',
     items: [
-      { title: 'Split Editor', desc: 'Syntax-highlighted Markdown editor with three view modes: edit only, split preview, preview only. Multi-tab editing, auto-save, and unsaved changes indicator.' },
-      { title: 'Frontmatter Management', desc: 'Auto-parses YAML front matter. Status, priority, effort, tags — edit inline at the top of each document without touching raw source.' },
-      { title: 'Markdown Preview', desc: 'Supports Mermaid diagram rendering, GFM tables, checkboxes, task lists, code block syntax highlighting, and heading anchor links.' },
-      { title: 'Workspace Management', desc: 'File tree browser with expand/collapse and context menus. Multi-project switching, cross-file full-text search, live external change detection, breadcrumb navigation.' },
-      { title: 'Coverage Analysis', desc: 'Integrates with Claude CLI to auto-scan spec implementation coverage. Per-requirement status badges (implemented / partial / not implemented), bilingual analysis, manual override support.' },
-      { title: 'Progress Tracking', desc: 'Checkbox-based progress tracking with visual progress bars. Frontmatter status and priority badges at a glance.' },
-      { title: 'Keyboard Shortcuts', desc: 'Cmd+S save, Cmd+B toggle sidebar, Cmd+W close tab, Cmd+\\ toggle preview. Ctrl equivalents on Windows.' },
-      { title: 'Preferences', desc: 'Theme switching (light / dark / system), language switching (English / 繁體中文), editor font size adjustment, auto-save toggle.' },
+      { title: 'Editor & Preview', desc: 'Syntax-highlighted Markdown editor with three view modes: edit only, split preview, preview only. Mermaid diagrams, GFM tables, task lists, code highlighting. Multi-tab, auto-save.' },
+      { title: 'Frontmatter & Progress', desc: 'Auto-parses YAML front matter for inline status, priority, and tags editing. Checkbox-based progress tracking with visual progress bars at a glance.' },
+      { title: 'Workspace Management', desc: 'File tree with expand/collapse and context menus. Multi-project switching, cross-file full-text search, live external change detection, breadcrumb navigation.' },
+      { title: 'Spec Analysis', desc: 'AI-powered spec analysis via Claude CLI — coverage scanning with per-requirement status badges, DO/DON\'T checklists extraction, verification criteria, bilingual support, export to Markdown.' },
+      { title: 'Auto Update', desc: 'In-app update checker with release notes display. Download progress indicator, one-click install and relaunch — always stay on the latest version.' },
+      { title: 'Compact Mode', desc: 'Mini always-on-top window for quick spec reference while coding. Keep your specs visible without switching windows.' },
+      { title: 'Shortcuts & Preferences', desc: 'Cmd+S save, Cmd+B toggle sidebar, Cmd+W close tab, Cmd+\\ toggle preview. Theme switching, bilingual UI, font size adjustment, auto-save toggle.' },
     ],
   },
 
@@ -56,7 +55,7 @@ export const en = {
     steps: [
       { title: 'Write Specs', desc: 'Write Markdown spec documents in the split editor. Live preview, syntax highlighting, auto-save. Mark status and priority via Frontmatter.', tag: 'editor + preview + frontmatter' },
       { title: 'Track Progress', desc: 'Checkboxes auto-calculate completion rate with visual progress bars. Multi-project workspace switching, cross-file search.', tag: 'progress + workspace + search' },
-      { title: 'Analyze Coverage', desc: 'Integrates Claude CLI to auto-scan implementation status. Per-item badges for implemented / partial / not implemented, with manual override and caching.', tag: 'claude-cli + badges + cache' },
+      { title: 'Analyze Specs', desc: 'AI-powered analysis via Claude CLI — coverage scanning with status badges, DO/DON\'T checklists extraction, verification criteria. Bilingual, with cache and export.', tag: 'claude-cli + coverage + spec-analyzer' },
     ],
   },
 
@@ -67,7 +66,7 @@ export const en = {
     items: [
       { alt: 'Workspace — Multi-project file management', label: 'Workspace' },
       { alt: 'Editor — Split preview mode', label: 'Split Preview' },
-      { alt: 'Coverage analysis panel', label: 'Coverage Analysis' },
+      { alt: 'Spec analysis panel — DO/DON\'T checklists and verification criteria', label: 'Spec Analysis' },
     ],
     prev: 'Previous screenshot',
     next: 'Next screenshot',
@@ -120,9 +119,9 @@ export const en = {
     title: 'Frequently\nAsked.',
     items: [
       { q: 'Is this tool free?', a: 'Completely free and open source. MIT licensed — you can freely use, modify, and distribute it. No hidden fees, no feature restrictions.' },
-      { q: 'Which operating systems are supported?', a: 'Currently supports macOS (Apple Silicon .dmg) and Windows (x64 .msi). Linux support is planned.' },
+      { q: 'Which operating systems are supported?', a: 'Currently supports macOS (Apple Silicon .dmg) and Windows (x64 .exe). Linux support is planned.' },
       { q: 'macOS says "damaged, can\'t be opened"?', a: '<p>This is macOS Gatekeeper security — the app is not yet Apple-signed. Run this command in Terminal after installation:</p><code class="block bg-zinc-800/50 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-accent text-[12px] font-mono select-all mt-2">xattr -cr /Applications/Spec\\ Plan\\ Manager.app</code><p class="text-zinc-600 text-[11px] mt-2">Only needs to be run once.</p>', html: true },
-      { q: 'What tools does coverage analysis require?', a: 'Coverage analysis requires Claude CLI. All other features (editor, preview, progress tracking, file management) need no additional dependencies.' },
+      { q: 'What tools does spec analysis require?', a: 'Spec analysis (coverage scanning and DO/DON\'T extraction) requires Claude CLI. All other features (editor, preview, progress tracking, file management) need no additional dependencies.' },
       { q: 'Where is data stored?', a: 'All files are stored locally. No cloud sync, no account system, no telemetry. Your data is entirely yours.' },
       { q: 'Which Markdown syntax is supported?', a: 'Full GFM (GitHub Flavored Markdown) support including tables, task lists, code block syntax highlighting, Mermaid diagram rendering, YAML frontmatter, and heading anchor links.' },
     ],
